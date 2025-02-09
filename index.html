@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Countdown</title>
+    <style>
+        body {
+            background-color: pink;
+            color: rgb(186, 91, 107);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            overflow: hidden;
+        }
+        #countdown {
+            font-size: 3em;
+            margin-top: 20px;
+        }
+        img {
+            width: 200px;
+            height: auto;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        #continueButton {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: grey;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: not-allowed;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #continueButton.enabled {
+            background-color: rgb(186, 91, 107);
+            cursor: pointer;
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            clip-path: polygon(
+                50% 15%, 61% 0%, 80% 0%, 100% 20%, 100% 40%, 
+                90% 60%, 50% 100%, 10% 60%, 0% 40%, 0% 20%, 
+                20% 0%, 39% 0%
+              );
+              
+        
+            animation: float 5s infinite;
+        }
+        @keyframes float { 
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            color: white;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Happy Valentine's Day Bebe!</h1>
+    <p id="countdown"></p>
+    <p>Mag hintay ka kasi bebe HAHAHAHAHA!</p>
+    <img src="assets/imgs/pic1.jpg" alt="Couple">
+    <button id="continueButton" disabled>Continue</button>
+
+    <script>
+        // Set the date we're counting down to
+        var countDownDate = new Date("Feb 9, 2025 00:00:00").getTime();
+
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the element with id="countdown"
+            document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+
+            // If the count down is over, write some text and enable the button
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "Happy Valentine's Day!";
+                var button = document.getElementById("continueButton");
+                button.disabled = false;
+                button.classList.add("enabled");
+                button.style.cursor = "pointer";
+                button.addEventListener('click', () => {
+                    window.location.href = 'home.html';
+                });
+            }
+        }, 1000);
+
+        // Create flying hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 300);
+    </script>
+
+    <footer>
+        Created with ❤️ by Jade
+    </footer>
+</body>
+</html>

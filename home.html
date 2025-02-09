@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine</title>
+    <style>
+        body {
+            background-color: pink;
+            color: rgb(186, 91, 107);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            overflow: hidden;
+        }
+        #question {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: grey;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #noButton {
+            position: absolute;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <h1 id="question">Can you be my Valentine?</h1>
+    <button class="button" id="yesButton">Yes</button>
+    <button class="button" id="noButton">No</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+
+        yesButton.addEventListener('click', () => {
+            // Create popper effect
+            for (let i = 0; i < 100; i++) {
+                createConfetti();
+            }
+            const audio = new Audio('assets/music/music1.mp3');
+            audio.play();
+            Swal.fire({
+                title: 'I love you!',
+                text: 'You are my Valentine!',
+                icon: 'success',
+                confirmButtonText: 'Continue',
+                confirmButtonColor: '#ba5b6b',
+                background: '#ffe4e1',
+                backdrop: `
+                    rgba(0,0,123,0.4)
+                    url("https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHFnMHhybzF5dTQwb3lqbTI3ZTB1aXdyNms1dDEwdjFpeHM3cG13ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NfzERYyiWcXU4/giphy.gif")
+                    center top
+                    no-repeat
+                `,
+                width: '90%',
+                padding: '1em',
+                customClass: {
+                    popup: 'swal2-responsive-popup'
+                }
+            }).then(() => {
+                window.location.href = 'memories.html';
+            });
+        });
+
+        noButton.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noButton.clientWidth);
+            const y = Math.random() * (window.innerHeight - noButton.clientHeight);
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+        });
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.style.position = 'absolute';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.backgroundColor = 'red';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = Math.random() * window.innerHeight + 'px';
+            confetti.style.animation = 'fall 2s linear infinite';
+            document.body.appendChild(confetti);
+
+            setTimeout(() => {
+                confetti.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Authenticity Verification</title>
+    <style>
+        body {
+            background-color: pink;
+            color: rgb(186, 91, 107);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .verification-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .verification-form input {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 300px;
+        }
+        .verification-form button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: rgb(186, 91, 107);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .certificate {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid rgb(186, 91, 107);
+            border-radius: 10px;
+            background-color: white;
+            color: rgb(186, 91, 107);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Flower Authenticity Verification</h1>
+        <p class="message">Enter the date you received the flowers to verify their authenticity.</p>
+        <form class="verification-form" id="verificationForm">
+            <input type="date" id="verificationDate" required>
+            <button type="submit">Verify</button>
+        </form>
+        <p id="verificationResult" class="message"></p>
+        <div class="certificate" id="certificate">
+            <h2>Certificate of Authenticity</h2>
+            <p>This certifies that the flowers received on <span id="certificateDate"></span> are authentic and given with love.
+            At nag papatunay na ako ang gumawa hehehe love you.</p>
+            <p>Given by: Bebe Jade </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('verificationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const verificationDate = document.getElementById('verificationDate').value;
+            const validDate = '2025-02-14'; // The date the flowers were given
+
+            if (verificationDate === validDate) {
+                document.getElementById('verificationResult').innerText = 'The flowers are authentic! Given with love on February 14, 2025.';
+                document.getElementById('certificateDate').innerText = verificationDate;
+                document.getElementById('certificate').style.display = 'block';
+            } else {
+                document.getElementById('verificationResult').innerText = 'The flowers are not authentic. Please check the date and try again.';
+                document.getElementById('certificate').style.display = 'none';
+            }
+        });
+    </script>
+    <footer> Created with ❤️ by Jade</footer>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Puzzle</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            background-color: pink;
+            color: rgb(186, 91, 107);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            grid-template-rows: repeat(4, 100px);
+            gap: 5px;
+            justify-content: center;
+            margin: 20px auto;
+            visibility: hidden;
+        }
+        .puzzle-piece {
+            width: 100px;
+            height: 100px;
+            background-size: 400px 400px;
+            cursor: pointer;
+        }
+        .reference-photo {
+            width: 200px;
+            height: 200px;
+            background-size: cover;
+            margin-bottom: 20px;
+        }
+        .timer {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            visibility: hidden;
+        }
+        .start-button, .back-button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            background-color: rgb(186, 91, 107);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .photo-choices {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .photo-choices img {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid transparent;
+        }
+        .photo-choices img.selected {
+            border-color: red;
+        }
+        @media (max-width: 600px) {
+            .puzzle-container {
+                grid-template-columns: repeat(4, 50px);
+                grid-template-rows: repeat(4, 50px);
+            }
+            .puzzle-piece {
+                width: 50px;
+                height: 50px;
+                background-size: 200px 200px;
+            }
+            .reference-photo {
+                width: 100px;
+                height: 100px;
+            }
+            .photo-choices img {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.location.href='memories.html'">Back</button>
+    <h1>Complete the Photo Puzzle</h1>
+    <div class="photo-choices">
+        <img src="assets/imgs/pic1.jpg" alt="Picture 1" onclick="selectPhoto('assets/imgs/pic1.jpg')">
+        <img src="assets/imgs/pic2.jpg" alt="Picture 2" onclick="selectPhoto('assets/imgs/pic2.jpg')">
+        <img src="assets/imgs/pic3.jpg" alt="Picture 3" onclick="selectPhoto('assets/imgs/pic3.jpg')">
+        <img src="assets/imgs/cat.jpg" alt="Picture 4" onclick="selectPhoto('assets/imgs/cat.jpg')">
+        <img src="assets/imgs/cat2.jpg" alt="Picture 5" onclick="selectPhoto('assets/imgs/cat2.jpg')">
+    </div>
+    <div class="reference-photo" id="referencePhoto"></div>
+    <div class="timer" id="timer">1:30</div>
+    <button class="start-button" id="startButton" disabled>Start</button>
+    <div class="puzzle-container" id="puzzleContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const puzzleContainer = document.getElementById('puzzleContainer');
+        const timerElement = document.getElementById('timer');
+        const startButton = document.getElementById('startButton');
+        const referencePhoto = document.getElementById('referencePhoto');
+        const photoChoices = document.querySelectorAll('.photo-choices img');
+        let selectedImageUrl = '';
+        let timerInterval;
+
+        function selectPhoto(url) {
+            selectedImageUrl = url;
+            referencePhoto.style.backgroundImage = `url(${url})`;
+            startButton.disabled = false;
+            photoChoices.forEach(img => img.classList.remove('selected'));
+            document.querySelector(`img[src="${url}"]`).classList.add('selected');
+        }
+
+        function createPuzzlePieces() {
+            puzzleContainer.innerHTML = '';
+            const pieces = [];
+            for (let i = 0; i < 16; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('puzzle-piece');
+                piece.style.backgroundImage = `url(${selectedImageUrl})`;
+                piece.style.backgroundPosition = `${(i % 4) * -100}px ${(Math.floor(i / 4)) * -100}px`;
+                piece.dataset.index = i;
+                pieces.push(piece);
+            }
+            pieces.sort(() => Math.random() - 0.5);
+            pieces.forEach(piece => puzzleContainer.appendChild(piece));
+            return pieces;
+        }
+
+        let pieces = [];
+        let firstPiece = null;
+
+        puzzleContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('puzzle-piece')) {
+                if (!firstPiece) {
+                    firstPiece = e.target;
+                    firstPiece.style.border = '2px solid red';
+                } else {
+                    const secondPiece = e.target;
+                    const firstIndex = firstPiece.dataset.index;
+                    const secondIndex = secondPiece.dataset.index;
+
+                    [firstPiece.style.backgroundPosition, secondPiece.style.backgroundPosition] = [secondPiece.style.backgroundPosition, firstPiece.style.backgroundPosition];
+                    [firstPiece.dataset.index, secondPiece.dataset.index] = [secondIndex, firstIndex];
+
+                    firstPiece.style.border = 'none';
+                    firstPiece = null;
+
+                    if (pieces.every((piece, index) => piece.dataset.index == index)) {
+                        clearInterval(timerInterval);
+                        Swal.fire({
+                            title: 'Congratulations!',
+                            text: 'You completed the puzzle! I love you!',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#ff69b4'
+                        });
+                    }
+                }
+            }
+        });
+
+        function startTimer() {
+            let timeLeft = 90;
+            timerElement.style.visibility = 'visible';
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    Swal.fire({
+                        title: 'Time\'s up!',
+                        text: 'You ran out of time!',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again',
+                        confirmButtonColor: '#ff69b4'
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            }, 1000);
+        }
+
+        startButton.addEventListener('click', () => {
+            startButton.style.display = 'none';
+            puzzleContainer.style.visibility = 'visible';
+            pieces = createPuzzlePieces();
+            startTimer();
+        });
+    </script>
+</body>
+</html>

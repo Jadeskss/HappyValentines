@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Memories</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <style>
+        body {
+            background-color: pink;
+            color: rgb(186, 91, 107);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .pictures {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .pictures img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .video-container {
+            margin-top: 20px;
+        }
+        .video-container video {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .claim-button, .game-button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: rgb(186, 91, 107);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" data-aos="fade-up">
+        <h1>Our Journey Together</h1>
+        <p id="yearsTogether"></p>
+        <div class="message">
+            <p>Happy monthsary! And Happy Valentine Bebe ko sana wag ka mag bago maging pasaway parin ikaw mwaa</p>
+        </div>
+    </div>
+
+    <div class="container" data-aos="fade-up">
+        <h2>Sweet Message</h2>
+        <div class="message">
+            <p>Ang message ko sayo ay sana mag ka mag bago at mag hanap ng iba daoat ako lang mahal mo HAHAHAHAH.
+                sana wag ka mag sawa na mag libre sakin at sana wag ka mag bago sakin kasi mahal na mahal kita.
+            </p>
+        </div>
+    </div>
+
+    <div class="container" data-aos="fade-up">
+        <h2>Our Pictures Together</h2>
+        <div class="pictures">
+            <img src="assets/imgs/pic1.jpg" alt="Picture 1" data-aos="fade-up">
+            <img src="assets/imgs/pic2.jpg" alt="Picture 2" data-aos="fade-up">
+            <img src="assets/imgs/pic3.jpg" alt="Picture 3" data-aos="fade-up">
+            <img src="assets/imgs/pic4.jpg" alt="Picture 4" data-aos="fade-up">
+            <img src="assets/imgs/pic5.jpg" alt="Picture 5" data-aos="fade-up">
+            <img src="assets/imgs/pic6.jpg" alt="Picture 6" data-aos="fade-up">
+            <img src="assets/imgs/pic7.jpg" alt="Picture 7" data-aos="fade-up">
+            <img src="assets/imgs/pic8.jpg" alt="Picture 8" data-aos="fade-up">
+            <img src="assets/imgs/pic9.jpg" alt="Picture 9" data-aos="fade-up">
+            <img src="assets/imgs/pic10.jpg" alt="Picture 10" data-aos="fade-up">
+            <img src="assets/imgs/pic11.jpg" alt="Picture 11" data-aos="fade-up">
+            <img src="assets/imgs/pic12.jpg" alt="Picture 12" data-aos="fade-up">
+            <img src="assets/imgs/pic13.jpg" alt="Picture 13" data-aos="fade-up">
+            <img src="assets/imgs/pic14.jpg" alt="Picture 14" data-aos="fade-up">
+            <img src="assets/imgs/pic15.jpg" alt="Picture 15" data-aos="fade-up">
+            <img src="assets/imgs/pic16.jpg" alt="Picture 16" data-aos="fade-up">
+            <img src="assets/imgs/pic17.jpg" alt="Picture 17" data-aos="fade-up">
+            <img src="assets/imgs/pic18.jpg" alt="Picture 18" data-aos="fade-up">
+            <img src="assets/imgs/pic19.jpg" alt="Picture 19" data-aos="fade-up">
+            <img src="assets/imgs/pic20.jpg" alt="Picture 20" data-aos="fade-up">
+        </div>
+    </div>
+
+    <div class="container" data-aos="fade-up">
+        <h2>Our Special Video HAHAHAHAHAH</h2>
+        <div class="video-container">
+            <video controls>
+                <source src="assets/videos/vid1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <div class="container" data-aos="fade-up">
+        <h2>Flower Bouquet</h2>
+        <img src="assets/imgs/flowers.png" alt="Flower Bouquet" style="width: 50%; border-radius: 10px;">
+        <button class="claim-button" onclick="downloadFlowers()">Claim</button>
+    </div>
+
+    <div class="container" data-aos="fade-up">
+        <h2>Games</h2>
+        <button class="game-button" onclick="startPuzzle()">Puzzle</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const monthsaryDate = new Date("January 11, 2022");
+        const today = new Date();
+        const diffTime = Math.abs(today - monthsaryDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const yearsTogether = Math.floor(diffDays / 365);
+        const remainingDays = diffDays % 365;
+        const monthsTogether = Math.floor(remainingDays / 30);
+        const daysTogether = remainingDays % 30;
+
+        const yearsText = yearsTogether > 1 ? `${yearsTogether} years` : `${yearsTogether} year`;
+        const monthsText = monthsTogether > 1 ? `${monthsTogether} months` : `${monthsTogether} month`;
+        const daysText = daysTogether > 1 ? `${daysTogether} days` : `${daysTogether} day`;
+
+        document.getElementById("yearsTogether").innerText = `We have been together for ${yearsText}, ${monthsText}, and ${daysText}.`;
+
+        function downloadFlowers() {
+            const link = document.createElement('a');
+            link.href = 'assets/imgs/foryouflowers.png';
+            link.download = 'flowers.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function startPuzzle() {
+            window.location.href = 'puzzle.html';
+        }
+
+    </script>
+    <footer>
+        Created with ❤️ by Jade
+    </footer>
+</body>
+</html>
