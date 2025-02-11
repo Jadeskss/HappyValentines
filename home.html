@@ -16,6 +16,7 @@
         #question {
             font-size: 2em;
             margin-bottom: 20px;
+            display: none;
         }
         .button {
             font-size: 1.5em;
@@ -27,8 +28,65 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        #noButton {
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            display: none;
+        }
+        .envelope {
+            position: relative;
+            width: 200px;
+            height: 150px;
+            background: #fff;
+            margin: 50px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: rgb(186, 91, 107);
+            flex-direction: column;
+        }
+        .envelope:before, .envelope:after {
+            content: '';
             position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 75px 100px;
+            border-color: transparent transparent #fff transparent;
+            top: -75px;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+        .envelope:after {
+            top: auto;
+            bottom: -75px;
+            border-color: #fff transparent transparent transparent;
+        }
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            clip-path: polygon(
+                50% 15%, 61% 0%, 80% 0%, 100% 20%, 100% 40%, 
+                90% 60%, 50% 100%, 10% 60%, 0% 40%, 0% 20%, 
+                20% 0%, 39% 0%
+            );
+        }
+        .message {
+            display: none;
+            font-size: 2em;
+            margin-top: 20px;
         }
         @keyframes fall {
             0% {
@@ -40,18 +98,38 @@
                 opacity: 0;
             }
         }
+        @media (max-width: 600px) {
+            .button {
+                font-size: 1.2em;
+                padding: 8px 16px;
+            }
+            #question {
+                font-size: 1.5em;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
     <h1 id="question">Can you be my Valentine?</h1>
-    <button class="button" id="yesButton">Yes</button>
-    <button class="button" id="noButton">No</button>
+    <div class="envelope" id="envelope">
+        <div class="heart"></div>
+        <span>Open me</span>
+    </div>
+    <div class="message" id="message">Happy Valentine's Bebe, I love you!</div>
+    <div class="button-container" id="buttonContainer">
+        <button class="button" id="yesButton">Yes</button>
+        <button class="button" id="noButton">No</button>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const yesButton = document.getElementById('yesButton');
         const noButton = document.getElementById('noButton');
+        const envelope = document.getElementById('envelope');
+        const message = document.getElementById('message');
+        const question = document.getElementById('question');
+        const buttonContainer = document.getElementById('buttonContainer');
 
         yesButton.addEventListener('click', () => {
             // Create popper effect
@@ -63,13 +141,16 @@
             Swal.fire({
                 title: 'I love you!',
                 text: 'You are my Valentine!',
-                icon: 'success',
+                iconHtml: '❤️',
+                customClass: {
+                    icon: 'no-border'
+                },
                 confirmButtonText: 'Continue',
                 confirmButtonColor: '#ba5b6b',
                 background: '#ffe4e1',
                 backdrop: `
                     rgba(0,0,123,0.4)
-                    url("https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHFnMHhybzF5dTQwb3lqbTI3ZTB1aXdyNms1dDEwdjFpeHM3cG13ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NfzERYyiWcXU4/giphy.gif")
+                    url("https://media1.tenor.com/m/WsWej1C3ePYAAAAC/yippee-cat-kitty.gif")
                     center top
                     no-repeat
                 `,
@@ -86,8 +167,15 @@
         noButton.addEventListener('mouseover', () => {
             const x = Math.random() * (window.innerWidth - noButton.clientWidth);
             const y = Math.random() * (window.innerHeight - noButton.clientHeight);
+            noButton.style.position = 'absolute';
             noButton.style.left = `${x}px`;
             noButton.style.top = `${y}px`;
+        });
+
+        envelope.addEventListener('click', () => {
+            envelope.style.display = 'none';
+            question.style.display = 'block';
+            buttonContainer.style.display = 'flex';
         });
 
         function createConfetti() {

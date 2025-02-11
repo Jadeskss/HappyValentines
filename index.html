@@ -4,24 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Valentine's Day</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap">
     <style>
         body {
             background-color: pink;
             color: rgb(186, 91, 107);
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: 'Comic Neue', cursive, sans-serif;
             text-align: center;
             padding-top: 50px;
             overflow: hidden;
+            margin: 0;
         }
         #countdown {
             font-size: 3em;
             margin-top: 20px;
         }
-        img {
-            width: 200px;
+        .img-container {
+            position: relative;
+            display: inline-block;
+        }
+        .img-container img {
+            width: 80%;
+            max-width: 200px;
             height: auto;
             margin: 10px;
-            border-radius: 10px;
+            border-radius: 10%; /* Make the image circular */
+            border: 5px solid transparent;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 20px rgb(169, 48, 48);
+            }
         }
         #continueButton {
             font-size: 1.5em;
@@ -50,9 +68,15 @@
                 90% 60%, 50% 100%, 10% 60%, 0% 40%, 0% 20%, 
                 20% 0%, 39% 0%
               );
-              
-        
             animation: float 5s infinite;
+        }
+        .plushie {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('assets/imgs/plush.png');
+            background-size: cover;
+            animation: floatPlushie 10s infinite;
         }
         @keyframes float { 
             0% {
@@ -64,6 +88,16 @@
                 opacity: 0;
             }
         }
+        @keyframes floatPlushie { 
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(-360deg);
+                opacity: 0;
+            }
+        }
         footer {
             position: fixed;
             bottom: 0;
@@ -71,13 +105,24 @@
             color: white;
             padding: 10px 0;
         }
+        @media (max-width: 600px) {
+            #countdown {
+                font-size: 2em;
+            }
+            #continueButton {
+                font-size: 1.2em;
+                padding: 8px 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Happy Valentine's Day Bebe!</h1>
     <p id="countdown"></p>
-    <p>Mag hintay ka kasi bebe HAHAHAHAHA!</p>
-    <img src="assets/imgs/pic1.jpg" alt="Couple">
+    <p>Mag hintay ka muna bebe HAHAHAHAHA!</p>
+    <div class="img-container">
+        <img src="assets/imgs/pic1.jpg" alt="Couple">
+    </div>
     <button id="continueButton" disabled>Continue</button>
 
     <script>
@@ -112,6 +157,7 @@
                 button.classList.add("enabled");
                 button.style.cursor = "pointer";
                 button.addEventListener('click', () => {
+                    sessionStorage.setItem('authenticated', 'true');
                     window.location.href = 'home.html';
                 });
             }
@@ -130,7 +176,21 @@
             }, 5000);
         }
 
+        // Create floating plushie
+        function createPlushie() {
+            const plushie = document.createElement('div');
+            plushie.classList.add('plushie');
+            plushie.style.left = Math.random() * 100 + 'vw';
+            plushie.style.animationDuration = Math.random() * 5 + 5 + 's';
+            document.body.appendChild(plushie);
+
+            setTimeout(() => {
+                plushie.remove();
+            }, 10000);
+        }
+
         setInterval(createHeart, 300);
+        setInterval(createPlushie, 10000); // Create one plushie every 10 seconds
     </script>
 
     <footer>
